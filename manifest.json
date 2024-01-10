@@ -1,6 +1,6 @@
 {
   "name": "Official document helper",
-  "description": "Official tect document code viewer helper",
+  "description": "Official text document code viewer helper",
   "version": "1.0",
   "manifest_version": 3,
   "background": {
@@ -25,6 +25,5 @@
     "32": "/images/code-32.png",
     "48": "/images/code-48.png",
     "128": "/images/code-128.png"
-  },
-  "options_page": "options.html"
+  }
 }

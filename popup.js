@@ -3,30 +3,56 @@
 * | 팝업 |
 * ---------------------------------------------------------------------------------
 **/
+document.addEventListener('DOMContentLoaded', () => {
+    var toggleView = document.getElementById('toggleView');
 
-// changeColor ID element 를 취득
-let changeColor = document.getElementById("changeColor");
-
-// 스토리지에 저장되어 있는 컬러가 있다면 표시
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
+    toggleView.addEventListener('change', function () {
+        if (this.checked) {
+            // When checked, hide the sidebar and make main content larger
+            chrome.tabs.executeScript({
+                code: `document.querySelector('.lg\\:-mt-16').style.display = 'none';
+                       document.getElementsByTagName('nav')[2].style.display = 'none';
+                       document.querySelector('main.min-w-0.isolate').style.display = 'grid';`
+            });
+        } else {
+            // When not checked, show the sidebar and return main content to original size
+            chrome.tabs.executeScript({
+                code: `document.querySelector('.lg\\:-mt-16').style.display = '';
+                       document.getElementsByTagName('nav')[2].style.display = '';
+                       document.querySelector('main.min-w-0.isolate').style.display = 'block';`
+            });
+        }
+    });
 });
 
-// 배경색 버튼을 클릭하였을 경우 이벤트 등록
-changeColor.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
-  });
-});
 
 /**
- * @description 현재 웹 페이지의 Body 요소의 배경색을 변경해주는 함수
- **/
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
-  });
+ * // code: "1": Hide the sidebar
+const sidebarLeft = document.querySelector('.lg\\:-mt-16'); 
+if (sidebarLeft ) {
+  sidebarLeft.style.display = 'none';
 }
+document.getElementsByTagName('nav')[2].style.display='none';
+
+// main content bigger
+const gridContainer = document.querySelector('main.min-w-0.isolate');
+if (gridContainer) {
+    gridContainer.style.display = 'grid';
+    // gridContainer.style.gridTemplateColumns = '1fr';
+}
+
+
+// code: "2": show the sidebar
+const sidebarLeft = document.querySelector('.lg\\:-mt-16'); 
+if (sidebarLeft ) {
+  sidebarLeft.style.display = '';
+}
+document.getElementsByTagName('nav')[2].style.display='';
+
+// show the smaller
+const gridContainer = document.querySelector('main.min-w-0.isolate');
+if (gridContainer) {
+    gridContainer.style.display = 'block';
+    // gridContainer.style.gridTemplateColumns = '1fr';
+}
+ */

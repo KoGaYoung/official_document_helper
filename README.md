@@ -1,6 +1,6 @@
 # ⚡ Chrome Extension 샘플 소스
 
-## 📘 개요
+## 목적
 Chrome Extension 으로 개발 공식문서를 편하게 보기위한 툴을 개발했습니다.
 
 아래 블로그를 참고했습니다
