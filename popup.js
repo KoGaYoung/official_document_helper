@@ -1,30 +1,31 @@
-/**
-* ---------------------------------------------------------------------------------
-* | 팝업 |
-* ---------------------------------------------------------------------------------
-**/
-document.addEventListener('DOMContentLoaded', () => {
-    var toggleView = document.getElementById('toggleView');
-
-    toggleView.addEventListener('change', function () {
-        if (this.checked) {
-            // When checked, hide the sidebar and make main content larger
-            chrome.tabs.executeScript({
-                code: `document.querySelector('.lg\\:-mt-16').style.display = 'none';
-                       document.getElementsByTagName('nav')[2].style.display = 'none';
-                       document.querySelector('main.min-w-0.isolate').style.display = 'grid';`
-            });
-        } else {
-            // When not checked, show the sidebar and return main content to original size
-            chrome.tabs.executeScript({
-                code: `document.querySelector('.lg\\:-mt-16').style.display = '';
-                       document.getElementsByTagName('nav')[2].style.display = '';
-                       document.querySelector('main.min-w-0.isolate').style.display = 'block';`
-            });
-        }
-    });
+// 이벤트 핸들러를 등록합니다.
+document.addEventListener('DOMContentLoaded', function() {
+  // 버튼 클릭 시 주 탭의 DOM을 수정하는 함수 호출
+  document.getElementById('toggleView').addEventListener('change', modifyTabDOM);
 });
 
+// 주 탭의 DOM을 수정하는 함수
+function modifyTabDOM() {
+  // 현재 활성화된 탭을 찾습니다.
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    
+    if (this.checked) {
+        // 주 탭에 스크립트를 주입하여 DOM을 수정합니다.
+        chrome.tabs.executeScript(tabs[0].id, {
+            code: `document.querySelector('.lg\\:-mt-16').style.display = 'none';
+                    document.getElementsByTagName('nav')[2].style.display = 'none';
+                    document.querySelector('main.min-w-0.isolate').style.display = 'grid';`
+        });
+    } else {
+        chrome.tabs.executeScript(tabs[0].id, {
+                    code: `document.querySelector('.lg\\:-mt-16').style.display = '';
+                       document.getElementsByTagName('nav')[2].style.display = '';
+                       document.querySelector('main.min-w-0.isolate').style.display = 'block';`
+                });
+    }
+   
+  });
+}
 
 /**
  * // code: "1": Hide the sidebar
