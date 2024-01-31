@@ -1,17 +1,21 @@
+.toggleView {
+  color: #cccccc;
+}
+
 .toggleBG {
-  background: #CCCCCC;
+  background: #cccccc;
   width: 70px;
-   height: 30px;
-  border: 1px solid #CCCCCC; 
+  height: 30px;
+  border: 1px solid #cccccc;
   border-radius: 15px;
-}   
+}
 
 .toggleFG {
-  background: #FFFFFF; 
-  width: 30px; 
-  height: 30px; 
-  border: none; 
-  border-radius: 15px; 
-  position: relative; 
+  background: #ffffff;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 15px;
+  position: relative;
   left: 0px;
 }

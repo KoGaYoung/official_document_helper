@@ -14,4 +14,5 @@ https://chromewebstore.google.com/detail/official-document-helper/hdigdnmbnddfaj
 
 ## 다운받아서 실행해봤는데.. 동작을 안한다! (feat. 제 컴퓨터에선 재현됬는데요)
 지피티 말로는 크롬브라우저랑, 실제 스크립트랑 다른 컨택스트에서 동작할 수있고 CSP 문제일수도 있다고했다.
-다른 컨택스트인것같아 js소스를 일부 수정해보았다.
+
+다른 컨텍스트에서 동작한다고해서 js 소스를 살펴보니, scripting로 수정했다.

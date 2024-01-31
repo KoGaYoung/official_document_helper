@@ -1,11 +1,12 @@
 {
   "name": "Official document helper",
   "description": "Official text document code viewer helper",
-  "version": "1.0",
+  "version": "1.2",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
+  "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
