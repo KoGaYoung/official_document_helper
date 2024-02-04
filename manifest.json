@@ -1,7 +1,7 @@
 {
   "name": "Official document helper",
   "description": "Official text document code viewer helper",
-  "version": "1.2",
+  "version": "1.3",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"

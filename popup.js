@@ -1,58 +1,48 @@
-// 이벤트 핸들러를 등록합니다.
-document.addEventListener('DOMContentLoaded', function() {
-  // 버튼 클릭 시 주 탭의 DOM을 수정하는 함수 호출
-  document.getElementById('toggleView').addEventListener('change', modifyTabDOM);
-});
+// 현재 탭 정보 리턴 함수
+const getCurrentTab = async () => {
+  let queryOptions = { active: true, lastFocusedWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
+
+  return tab;
+};
 
 // 주 탭의 DOM을 수정하는 함수
-function modifyTabDOM() {
-  // 현재 활성화된 탭을 찾습니다.
-  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-    if (this.checked) {
-        // 주 탭에 스크립트를 주입하여 DOM을 수정합니다.
-        chrome.scripting.executeScript(tabs[0].id, {
-          code: `document.querySelector('.lg\\:-mt-16').style.display = 'none';
-                    document.getElementsByTagName('nav')[2].style.display = 'none';
-                    document.querySelector('main.min-w-0.isolate').style.display = 'grid';`,
-        });
-    } else {
-        chrome.scripting.executeScript(tabs[0].id, {
-          code: `document.querySelector('.lg\\:-mt-16').style.display = '';
-                       document.getElementsByTagName('nav')[2].style.display = '';
-                       document.querySelector('main.min-w-0.isolate').style.display = 'block';`,
-        });
-    }
-   
-  });
-}
+const handleDOM = async (e) => {
+  // 탬 정보 가져오기
+  let tab = await getCurrentTab();
 
-/**
- * // code: "1": Hide the sidebar
-const sidebarLeft = document.querySelector('.lg\\:-mt-16'); 
-if (sidebarLeft ) {
-  sidebarLeft.style.display = 'none';
-}
-document.getElementsByTagName('nav')[2].style.display='none';
+  // 체크
+  if (e.target.checked) {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: function () {
+        document.getElementsByClassName(
+          "lg:grid-cols-sidebar-content"
+        )[0].style["grid-template-columns"] = "auto";
+        document.getElementsByClassName("lg:-mt-16")[0].style.display = "none";
+        document.getElementsByTagName("nav")[2].style.display = "none";
+        document.querySelector("main.min-w-0.isolate").style.display = "grid";
+      },
+    });
+  }
+  // 체크 해제
+  else {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: function () {
+        document.getElementsByClassName(
+          "lg:grid-cols-sidebar-content"
+        )[0].style["grid-template-columns"] = "";
+        document.getElementsByClassName("lg:-mt-16")[0].style.display = "";
+        document.getElementsByTagName("nav")[2].style.display = "";
+        document.querySelector("main.min-w-0.isolate").style.display = "";
+      },
+    });
+  }
+};
 
-// main content bigger
-const gridContainer = document.querySelector('main.min-w-0.isolate');
-if (gridContainer) {
-    gridContainer.style.display = 'grid';
-    // gridContainer.style.gridTemplateColumns = '1fr';
-}
-
-
-// code: "2": show the sidebar
-const sidebarLeft = document.querySelector('.lg\\:-mt-16'); 
-if (sidebarLeft ) {
-  sidebarLeft.style.display = '';
-}
-document.getElementsByTagName('nav')[2].style.display='';
-
-// show the smaller
-const gridContainer = document.querySelector('main.min-w-0.isolate');
-if (gridContainer) {
-    gridContainer.style.display = 'block';
-    // gridContainer.style.gridTemplateColumns = '1fr';
-}
- */
+// 이벤트 핸들러를 등록합니다.
+document.addEventListener("DOMContentLoaded", () => {
+  // 버튼 클릭 시 주 탭의 DOM을 수정하는 함수 호출
+  document.getElementById("toggleView").addEventListener("change", handleDOM);
+});
